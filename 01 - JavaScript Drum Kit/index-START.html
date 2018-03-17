@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>JS Drum Kit</title>
+  <title>JS 鼓包效果</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-
+  <!-- 按键盘的一个键，要播放音频及元素高亮 -->
+  <!-- 键值来匹配音频和元素 -->
+  <!-- data 自定义属性与键值统一 -->
+  <!-- 目的是为了更好的获取对应的元素 -->
   <div class="keys">
     <div data-key="65" class="key">
       <kbd>A</kbd>
@@ -58,7 +60,45 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-
+  // 删除高亮选中 class 名
+  var removeClass = function(keyElement) {
+    keyElement.setAttribute('class', 'key');
+  };
+  // 添加高亮选中 class 名
+  var addClass = function(keyElement) {
+    keyElement.className +=' playing';
+  };
+  // 播放
+  var play = function(keyAudio) {
+    // 把时间归零，不然连续按的话不是从头开始播放
+    keyAudio.currentTime = 0;
+    // HTML5 原生音频 API
+    keyAudio.play();
+  };
+  var down = function(e) {
+    // keyCode 是获取当前键值
+    // 获取所有当前键值对应的 div 和 audio 标签
+    var keyElementAll = document.querySelectorAll('[data-key="'+ e.keyCode +'"]');
+    // 如果能够匹配到
+    if(keyElementAll.length) {
+      // 声明键值的元素
+      var keyElement = keyElementAll[0];
+      // 声明键值的音频
+      var keyAudio = keyElementAll[1];
+      // 添加高亮选中 class 名
+      addClass(keyElement);
+      // 加个定时器，让连续按可以感知到
+      // 何为感知到？连续按，持续间断性播放，元素间断性高亮
+      setTimeout(function() {
+        // 播放
+        play(keyAudio);
+        // 删除高亮选中 class 名
+        removeClass(keyElement);
+      }, 60);
+    }
+  };
+  // document 添加键盘按下事件，只有按下事件才可以连续触发，连续按
+  document.onkeydown = down;
 </script>
 
 
