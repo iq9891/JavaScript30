@@ -2,30 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Scoped CSS Variables and JS</title>
+  <title>JavaScript 装饰图片</title>
 </head>
 <body>
-  <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
+  <h2>通过 <span id="hl" class='hl'>JavaScript</span> 装饰图片</h2>
 
   <div class="controls">
-    <label for="spacing">Spacing:</label>
+    <label for="spacing">内边距:</label>
     <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
 
-    <label for="blur">Blur:</label>
+    <label for="blur">模糊:</label>
     <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
 
-    <label for="base">Base Color</label>
+    <label for="base">基础颜色</label>
     <input id="base" type="color" name="base" value="#ffc600">
   </div>
 
-  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+  <img id="img" src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
-
-    /*
-      misc styles, nothing to do with CSS variables
-    */
-
     body {
       text-align: center;
       background: #193549;
@@ -45,6 +40,88 @@
   </style>
 
   <script>
+    // 2 小时 no.1
+    // 0.5 小时 no.2
+    var picker = {
+      /**
+       * 获取元素
+       * @param {string} element 元素
+       * @return {DOMElement};
+       */
+      el: function(element) {
+        return document.getElementById(element);
+      },
+      /**
+       * 设置模糊值
+       * @param {string} value 对设置的值
+       * @return undefined;
+       */
+      setBlur: function(value) {
+        this.imgElement.style.filter = 'blur('+ value +'px)';
+      },
+      /**
+       * 设置边框的宽度
+       * @param {string} value 对设置的值
+       * @return undefined;
+       */
+      setSpacing: function(value) {
+        this.imgElement.style.padding = value + 'px';
+      },
+      /**
+       * 设置边框的颜色
+       * @param {string} value 对设置的值
+       * @return undefined;
+       */
+      setColor: function(value) {
+        this.imgElement.style.background = value;
+        this.hlElement.style.color = value;
+      },
+      /**
+       * 绑定事件
+       * @return undefined;
+       */
+      bindEvent: function() {
+        var self = this;
+
+        this.blurElement.oninput = function(e) {
+          self.setBlur(e.target.value);
+        };
+        this.spacingElement.oninput = function(e) {
+          self.setSpacing(e.target.value);
+        };
+        this.colorElement.onchange = function(e) {
+          self.setColor(e.target.value);
+        };
+      },
+      /**
+       * 绑定获取所有操作的元素
+       * @return undefined;
+       */
+      getAllElement: function() {
+        this.imgElement = this.el('img');
+        this.hlElement = this.el('hl');
+        this.colorElement = this.el('base');
+        this.spacingElement = this.el('spacing');
+        this.blurElement = this.el('blur');
+      },
+      /**
+       * 初始化
+       * @return undefined;
+       */
+      init: function() {
+
+        this.getAllElement();
+
+        this.setBlur(this.blurElement.value);
+        this.setSpacing(this.spacingElement.value);
+        this.setColor(this.colorElement.value);
+
+        this.bindEvent();
+
+      }
+    };
+
+    picker.init();
   </script>
 
 </body>
