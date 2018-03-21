@@ -61,21 +61,38 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-  // 删除高亮选中 class 名
+  /**
+   * 删除高亮选中 class 名
+   * @param {object} keyElement 元素
+   * @return undefined;
+   */
   var removeClass = function(keyElement) {
     keyElement.setAttribute('class', 'key');
   };
-  // 添加高亮选中 class 名
+  /**
+   * 添加高亮选中 class 名
+   * @param {object} keyElement 元素
+   * @return undefined;
+   */
   var addClass = function(keyElement) {
     keyElement.className +=' playing';
   };
-  // 播放
+  /**
+   * 播放
+   * @param {object} keyAudio 元素
+   * @return undefined;
+   */
   var play = function(keyAudio) {
     // 把时间归零，不然连续按的话不是从头开始播放
     keyAudio.currentTime = 0;
     // HTML5 原生音频 API
     keyAudio.play();
   };
+  /**
+   * 鼠标按下事件
+   * @param {object} e event 对象
+   * @return undefined;
+   */
   var down = function(e) {
     // keyCode 是获取当前键值
     // 获取所有当前键值对应的 div 和 audio 标签
