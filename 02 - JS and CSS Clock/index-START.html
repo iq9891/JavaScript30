@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>JS + CSS Clock</title>
+  <title>JS + CSS 时钟效果</title>
 </head>
 <body>
 
@@ -53,7 +53,7 @@
       position: relative;
       width: 100%;
       height: 100%;
-      transform: translateY(-3px); /* account for the height of the clock hands */
+      transform: translateY(-3px) rotate(90deg); /* 计算时钟指针的高度，并调正时钟 */
     }
 
     .hand {
@@ -62,13 +62,62 @@
       background:black;
       position: absolute;
       top:50%;
+      transform-origin: right; /* 让指针旋转中心居右 */
     }
 
   </style>
 
   <script>
+    // 难点是 时针 整点到整点是每隔多少分钟过度的。 12度
+    // 2 小时 第一版，包括分析
+    // 0.5 小时 优化版
+    /**
+     * 设置样式
+     * @param {string} element 元素
+     * @param {number} rotate 旋转度数
+     * @return undefined;
+     */
+    var setStyle = function(element, rotate) {
+      document.querySelector('.'+ element+ '-hand').style.transform = 'rotate('+ rotate +'deg)';
+    };
+    /**
+     * 时间方法
+     */
+    var time = function() {
+      // 声明 Date 对象
+      var myDate = new Date();
 
+      // 一圈 360 度 / 一分钟 60 秒 = 6
+      var secondStep = 360 / 60;
+      var second = myDate.getSeconds() * secondStep;
+      setStyle('min', minute);
 
+      // 一圈 360 度 / 一小时 60 分 = 6
+      var minuteStep = 360 / 60;
+      var minute = myDate.getMinutes() * minuteStep;
+      setStyle('second', second);
+
+      // 一圈 360 度 / 一圈 12 个小时 = 30
+      var hourStep = 360 / 60;
+      // 整点之间的过渡 -> 一圈 360 度 / 整点之间的间距角度是 30 度 = 12
+      var transitionStep = 360 / 30;
+      // 时针随着分针的不断运动而运动
+      // 运动规律是， 分针每转 12 度，时针增转 1 度
+      var goToNextTime = Math.floor(minute / transitionStep);
+      var hour = myDate.getHours() * hourStep + goToNextTime;
+      setStyle('hour', hour);
+    };
+    /**
+     * setTimeout 模拟 setInterval 的定时器方法
+     */
+    var auto = function(){
+      time();
+      setTimeout(auto, 1000);
+    };
+    // 修复定时器有间隔才会触发
+    time();
+    // 运行时间定时器，让时间转起来
+    setTimeout(auto, 1000);
   </script>
 </body>
 </html>
