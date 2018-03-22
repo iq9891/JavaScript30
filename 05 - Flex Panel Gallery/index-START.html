@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>Flex Panels 💪</title>
+  <title>窗帘效果 💪</title>
   <link href='https://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -24,6 +24,7 @@
     .panels {
       min-height:100vh;
       overflow: hidden;
+      display: flex;
     }
 
     .panel {
@@ -34,6 +35,10 @@
       align-items:center;
       /* Safari transitionend event.propertyName === flex */
       /* Chrome + FF transitionend event.propertyName === flex-grow */
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       transition:
         font-size 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
         flex 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
@@ -61,6 +66,16 @@
       font-family: 'Amatic SC', cursive;
       text-shadow:0 0 4px rgba(0, 0, 0, 0.72), 0 0 14px rgba(0, 0, 0, 0.45);
       font-size: 2em;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .panel p:first-child {
+      transform: translateY(-100%);
+    }
+    .panel p:last-child {
+      transform: translateY(100%);
     }
     .panel p:nth-child(2) {
       font-size: 4em;
@@ -68,6 +83,11 @@
 
     .panel.open {
       font-size:40px;
+      flex: 5;
+    }
+    .panel.active p:last-child,
+    .panel.active p:first-child {
+      transform: translateY(0);
     }
 
   </style>
@@ -102,7 +122,60 @@
   </div>
 
   <script>
+    // 1 版 俩小时
+    // 2 版 2 h
+    /**
+     * 构造函数
+     */
+    function Accordion() {
+      this.getNode();
+      this.bind();
+    }
+    /**
+     * 绑定事件
+     */
+    Accordion.prototype.bind = function() {
+      /**
+       * 文字移动动画
+       * @param {TransitionEvent} e 元素
+       * @return undefined;
+       */
+      var amin = function(e) {
+        if (e.propertyName.includes('flex')) {
+          this.classList.toggle('active');
+        }
+      };
+      /**
+       * 点击事件
+       * @param {MouseEvent} e 元素
+       * @return undefined;
+       */
+      var click = function(e) {
+        if(e.target.nodeName === 'DIV') {
+          e.target.classList.toggle('open');
+        }
+        if(e.target.nodeName === 'P') {
+          e.target.parentNode.classList.toggle('open');
+        }
+      };
+      // 绑定过度结束事件
+      this.panel.forEach(function(panelNode) {
+        panelNode.addEventListener('transitionend', amin);
+      });
+      // 绑定点击事件
+      this.panels.onclick = click;
+    };
+    /**
+     * 获取元素
+     * @param {string} node 元素
+     * @return {DOMElement};
+     */
+    Accordion.prototype.getNode = function(node) {
+      this.panels = document.querySelector('.panels');
+      this.panel = document.querySelectorAll('.panel');
+    };
 
+    new Accordion();
   </script>
 
 
