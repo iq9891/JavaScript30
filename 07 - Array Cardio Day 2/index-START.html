@@ -25,16 +25,35 @@
     ];
 
     // Some and Every Checks
-    // Array.prototype.some() // is at least one person 19 or older?
-    // Array.prototype.every() // is everyone 19 or older?
+    // Array.prototype.some()
+    // is at least one person 19 or older?
+    // 至少有一个人19岁或以上吗？
+    var check19 = people.some(function(pp) {
+      return new Date() .getFullYear() - pp.year > 18;
+    });
+    console.log(check19, 'check19')
+    // Array.prototype.every()
+    // is everyone 19 or older?
+    // 每个人都19岁还是更大？
+    var every19 = people.every(function(pp) {
+      return new Date() .getFullYear() - pp.year > 18;
+    });
+    console.log(every19, 'every19')
 
     // Array.prototype.find()
     // Find is like filter, but instead returns just the one you are looking for
     // find the comment with the ID of 823423
+    // 查找就像过滤器，但只返回您正在寻找的。
+    // 用 823423 的ID找到注释
+    var findOne = comments.find(date => date.id === 823423);
+    console.log(findOne, 'findOne')
 
     // Array.prototype.findIndex()
     // Find the comment with this ID
     // delete the comment with the ID of 823423
+    // 在 comment 找到 id 为 823423 的数据，并删除
+    var findIndexOne = comments.splice(comments.findIndex(date => date.id === 523423), 1);
+    console.table(comments)
 
   </script>
 </body>
