@@ -2,21 +2,79 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>Type Ahead 👀</title>
+  <title>高亮搜索 👀</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <form class="search-form">
-    <input type="text" class="search" placeholder="City or State">
-    <ul class="suggestions">
-      <li>Filter for a city</li>
-      <li>or a state</li>
+    <input id="inp" type="text" class="search" placeholder="北京城区">
+    <ul id="sgt" class="suggestions">
+      <li>过滤北京城区</li>
     </ul>
   </form>
-<script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
-</script>
-  </body>
+  <script>
+    // 3h no.1
+    // 1h no.2
+    const district = [
+      '东城区',
+      '西城区',
+      '朝阳区',
+      '丰台区',
+      '石景山区',
+      '海淀区',
+      '门头沟区',
+      '房山区',
+      '通州区',
+      '顺义区',
+      '昌平区',
+      '大兴区',
+      '怀柔区',
+      '平谷区',
+      '密云区',
+      '延庆区'
+    ];
+    /**
+     * 包裹元素
+     * @param {Array} aDistrict 城区
+     * @param {String} val 输入的值
+     * @return {String};
+     */
+    var wrap = function(aDistrict, val) {
+      return '<li><span>' + aDistrict.replace(
+        new RegExp(val, 'g'),
+        '<span class="hl">'+ val +'</span>'
+      ) + '</span></li>';
+    };
+    /**
+     * 输入方法
+     * @param {InputEvent} e 城区
+     * @return undefined;
+     */
+    var input = function(e) {
+
+      var val = this.value;
+
+      var sgt = document.querySelector('#sgt');
+      // 如果没有输入内容
+      if(!val.length) {
+        sgt.innerHTML = '<li>过滤北京城区</li>';
+        return ;
+      }
+      // 筛选出输入的字符串
+      var afterDistrict = district.filter(dtt => dtt.indexOf(val) > -1);
+      // 如果筛选有结果
+      if(afterDistrict.length) {
+        // 在筛选出的每条结果( map )外面套上相应的结构( wrap )，并转成字符串( join )
+        sgt.innerHTML = afterDistrict.map(aDistrict => wrap(aDistrict, val)).join('');
+      }
+    };
+    // 绑定输入方法
+    document.querySelector('#inp').oninput = input;
+
+  </script>
+
+
+</body>
 </html>
