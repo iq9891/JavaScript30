@@ -2,11 +2,160 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>HTML5 Canvas</title>
+  <title>HTML5 Canvas 画画</title>
 </head>
 <body>
+
 <canvas id="draw" width="800" height="800"></canvas>
+
 <script>
+  // 2h no.1
+  // 0.5 no.2
+  /**
+   * 构造函数
+   */
+  function Draw() {
+    this.draw = document.querySelector('#draw');
+    // 记录上一次 move 的坐标
+    this.lastX = 0;
+    this.lastY = 0;
+    // hue 记录，用于 move 累加
+    this.hue = 0;
+    // 线的宽度
+    this.lineWidth = 100;
+    // 线宽度叠加的方向
+    this.lineDirection = true;
+    // 浏览器兼容处理
+    this.polyfill();
+  }
+  /**
+   * 浏览器兼容处理
+   */
+  Draw.prototype.polyfill = function() {
+    if (this.draw.getContext) {
+      this.init();
+    } else {
+      alert('您的浏览器版本太低');
+    }
+  };
+  /**
+   * 初始化
+   */
+  Draw.prototype.init = function() {
+    this.canvas = this.draw.getContext('2d');
+    this.setSize();
+    this.bindEvent();
+  };
+  /**
+   * 改尺寸
+   */
+  Draw.prototype.setSize = function() {
+    this.draw.height = window.innerHeight;
+    this.draw.width = window.innerWidth;
+  };
+  /**
+   * 绑定事件
+   */
+  Draw.prototype.bindEvent = function() {
+    var self = this;
+    this.draw.onmousedown = function(e) {
+      self.down(e);
+    };
+  };
+  /**
+   * 按下
+   * @param {MouseEvent} e Event 对象
+   * @return undefined;
+   */
+  Draw.prototype.down = function(e) {
+    var self = this;
+    // 更新起始点
+    this.updatePoint(e);
+    // 绑定移动事件
+    this.draw.onmousemove = function(e) {
+      self.move(e);
+    };
+    // 绑定抬起事件
+    this.draw.onmouseup = function(e) {
+      self.up();
+    };
+  };
+  /**
+   * 移动
+   * @param {MouseEvent} e Event 对象
+   * @return undefined;
+   */
+  Draw.prototype.move = function(e) {
+    // 改变颜色
+    this.changelineColor();
+    // 改变线宽叠加的方向
+    this.changelineDirection();
+
+    this.changelineWidth();
+    // 画画
+    this.drawing(e);
+    // 更新
+    this.updatePoint(e);
+  };
+  /**
+   * 抬起
+   */
+  Draw.prototype.up = function() {
+    this.draw.onmousemove = null;
+    this.draw.onmouseup = null;
+    this.hue = 0;
+  };
+  /**
+   * 改变线的颜色
+   */
+  Draw.prototype.changelineColor = function() {
+    this.hue += this.hue > 359 ? -1 : 1;
+  };
+  /**
+   * 改变线的方向
+   */
+  Draw.prototype.changelineDirection = function() {
+    if(this.lineWidth >= 100 || this.lineWidth <= 0) {
+      this.lineDirection = !this.lineDirection;
+    }
+  };
+  /**
+   * 改变线的方向
+   */
+  Draw.prototype.changelineWidth = function() {
+    // 改变线宽方向
+    if(this.lineDirection) {
+      this.lineWidth++;
+    } else {
+      this.lineWidth--;
+    }
+  };
+  /**
+   * 画画
+   * @param {MouseEvent} e Event 对象
+   * @return undefined;
+   */
+  Draw.prototype.drawing = function(e) {
+    this.canvas.beginPath();
+    this.canvas.lineWidth = this.lineWidth;
+    this.canvas.moveTo(this.lastX, this.lastY);
+    this.canvas.lineCap= 'round';
+    this.canvas.lineTo(e.clientX, e.clientY);
+    this.canvas.strokeStyle = 'hsl('+ this.hue +',50%,50%)';
+    this.canvas.stroke();
+  };
+  /**
+   * 更新最后移动点的坐标
+   * @param {MouseEvent} e Event 对象
+   * @return undefined;
+   */
+  Draw.prototype.updatePoint = function(e) {
+    this.lastX = e.clientX;
+    this.lastY = e.clientY;
+  };
+
+  // 实例化
+  new Draw();
 </script>
 
 <style>
