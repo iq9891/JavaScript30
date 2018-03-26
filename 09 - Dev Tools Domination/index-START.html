@@ -17,27 +17,47 @@
       p.style.fontSize = '50px';
     }
 
-    // Regular
+    // Regular 常规日志输出
+    console.log('hello')
 
-    // Interpolated
+    // Interpolated 插入一个内容
+    console.log('我是%s', '李红星')
 
-    // Styled
+    // Styled 一段输出改变样式
+    console.log('我%c3岁了', 'color: red')
 
-    // warning!
+    // warning! 提示
+    console.warn('我是提示')
 
-    // Error :|
+    // Error :| 错误
+    console.error('我是错误')
 
-    // Info
+    // Info 信息
+    console.info('我是信息')
 
-    // Testing
+    // Testing 测试断言
+    console.assert(111 === 222, 'That is wrong!')
 
-    // clearing
+    // clearing 清除
+    console.clear();
 
     // Viewing DOM Elements
+    console.dir(document.querySelector('p'))
 
-    // Grouping together
+    // Grouping together 整组打印
+    var dog = dogs[0];
+    console.groupCollapsed(`${dog.name}`);
+    console.log(`This is ${dog.name}`);
+    console.log(`${dog.name} is ${dog.age} years old`);
+    console.log(`${dog.name} is ${dog.age * 7} dog years old`);
+    console.groupEnd(`${dog.name}`);
 
     // counting
+    console.time('for loop');
+    for(var i = 0, len = 10; i < len; i++) {
+      console.count('Wes');
+    }
+    console.timeEnd('for loop');
 
     // timing
 
