@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>Hold Shift to Check Multiple Checkboxes</title>
+  <title>按住 shift 可多选</title>
 </head>
 <body>
   <style>
@@ -54,10 +54,9 @@
 
   </style>
    <!--
-   The following is a common layout you would see in an email client.
+   以下是您在电子邮件客户端中看到的常见布局。
 
-   When a user clicks a checkbox, holds Shift, and then clicks another checkbox a few rows down, all the checkboxes inbetween those two checkboxes should be checked.
-
+   当用户点击一个复选框时，按住Shift键，然后点击几行下的另一个复选框，应该检查这两个复选框之间的所有复选框。
   -->
   <div class="inbox">
     <div class="item">
@@ -99,6 +98,93 @@
   </div>
 
 <script>
+  // 2h no.1
+  // 0.1h no.2
+  /**
+   * 构造函数
+   */
+  function CheckBox() {
+    this.init();
+    this.bindEvent();
+  }
+  /**
+   * 初始化
+   */
+  CheckBox.prototype.init = function() {
+    this.inputs = document.querySelectorAll('input');
+    // 是否按下 shift 键
+    this.shiftKey = false;
+    // 记录上一次按钮的索引
+    this.lastChecked = -1;
+  };
+  /**
+   * 绑定事件
+   */
+  CheckBox.prototype.bindEvent = function() {
+
+    var self = this;
+
+    document.onkeydown = function(e) {
+      self.down(e);
+    };
+
+    document.onkeyup = function() {
+      self.up();
+    };
+
+    this.inputs.forEach(function(input, inputIndex) {
+      input.onclick = function(e) {
+        self.click(e, input, inputIndex);
+      };
+    });
+
+  };
+  /**
+   * 按下
+   * @param {MouseEvent} e Event 对象
+   * @return undefined;
+   */
+  CheckBox.prototype.down = function(e) {
+    this.shiftKey = e.keyCode === 16;
+  };
+  /**
+   * 抬起
+   */
+  CheckBox.prototype.up = function() {
+    this.shiftKey = false;
+  };
+  /**
+   * 按下
+   * @param {MouseEvent} e Event 对象
+   * @param {DomElement} input 多选框
+   * @param {MouseEvent} inputIndex input 多选框的索引
+   * @return undefined;
+   */
+  CheckBox.prototype.click = function(e, input, inputIndex) {
+    // 改变选择状态
+    input.checked = !!input.checked;
+    // 如果按住 shift
+    if(this.shiftKey) {
+      this.loopCheck(inputIndex);
+    }
+    this.lastChecked = input.checked ? inputIndex : -1;
+  };
+  /**
+   * 按下
+   * @param {Number} loopNum 循环数
+   * @return undefined;
+   */
+  CheckBox.prototype.loopCheck = function(loopNum) {
+    // 之所以 减一 加一 都是防止重复选择
+    if(loopNum > this.lastChecked + 1) { // 起始点击的 小于 最后点击的
+      this.loopCheck(--loopNum);
+    } else if(loopNum < this.lastChecked - 1) { // 起始点击的 大于 最后点击的
+      this.loopCheck(++loopNum);
+    }
+    this.inputs[loopNum].checked = true;
+  };
+
+  new CheckBox();
 </script>
 </body>
 </html>
