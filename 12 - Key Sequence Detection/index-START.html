@@ -2,11 +2,27 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>Key Detection</title>
+  <title>密钥序列检测</title>
   <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
 </head>
 <body>
+  检测是否输入了 li
+  输入正确之后会有意外惊喜
 <script>
+// 40m no.1
+var keys = 'li'; // 密钥
+var result = [];
+document.onkeydown = function(e) {
+  result.push(e.key);
+  // 如果超出密钥的长度，那么就从最后一位删除多出去的内容
+  // splice 第一个参数如果是负数，那么就从最后开始
+  result.splice(-result.length - 1, result.length - keys.length);
+  if(result.join('').includes(keys)) {
+    // 添加成功效果
+    cornify_add();
+    console.log('密钥检测通过!');
+  }
+};
 </script>
 </body>
 </html>
