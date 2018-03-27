@@ -58,6 +58,25 @@
       };
     }
 
+    const sliderImages = document.querySelectorAll('.slide-in');
+
+    function gogogo() {
+      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      var windowHeight = window.innerHeight;
+
+      sliderImages.forEach(function(img, imgIndex) {
+        var offset = img.offsetTop - scrollTop;
+        // 如果进来，没出去
+        if(offset < windowHeight && offset > -img.offsetHeight) {
+          img.classList.add('active');
+        } else {
+          img.classList.remove('active');
+        }
+      });
+    }
+
+    window.onscroll = debounce(gogogo);
+
   </script>
 
   <style>
