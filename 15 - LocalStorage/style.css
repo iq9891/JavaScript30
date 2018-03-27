@@ -39,6 +39,8 @@
       padding: 0;
       text-align: left;
       list-style: none;
+      max-height: 235px;
+      overflow: auto;
     }
 
     .plates li {

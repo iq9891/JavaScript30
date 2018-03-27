@@ -28,8 +28,88 @@
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  let items = [];
 
+  /**
+   * 存储数据
+   * @param {String} item 数据对象
+   * @param {Number} itemIndex 数据索引
+   * @return {string};
+   */
+  var handleItem = function(item, itemIndex) {
+    var newItem = JSON.parse(item);
+    return '<li>\
+       <input type="checkbox" data-index="'+ itemIndex +'" id="item'+ itemIndex +'"'+ (newItem.done ? ' checked=""' : '') +'>\
+       <label for="item'+ itemIndex +'">'+ newItem.text +'</label>\
+     </li>';
+  };
+  /**
+   * 设置 html 内容
+   */
+  var insertHtml = function() {
+    itemsList.innerHTML = items.map(handleItem).join(',').replace(/,/g, '');
+  };
+  /**
+   * 获取数据
+   */
+  var getDate = function() {
+    var itemsDate = localStorage.getItem('items');
+    if(itemsDate) {
+      items = itemsDate.split('|');
+      insertHtml();
+    }
+  };
+  /**
+   * 存储数据
+   */
+  var setItem = function() {
+    localStorage.setItem('items', items.join('|'));
+  };
+  /**
+   * 提交
+   * @param {MouseEvent} e Event 对象
+   * @return undefined;
+   */
+  var submit = function(e) {
+    // 阻止默认事件，防止跳转提交
+    e.preventDefault();
+
+    var item = document.querySelector('[name="item"]');
+
+    var date = {
+      text: item.value,
+      done: false,
+    };
+
+    items.push(JSON.stringify(date));
+
+    insertHtml();
+
+    setItem();
+  };
+  /**
+   * 点击
+   * @param {MouseEvent} e Event 对象
+   * @return undefined;
+   */
+  var click = function(e) {
+    if(e.target.nodeName === 'LABEL') {
+
+      var input = e.target.parentNode.children[0];
+      var inputDate = JSON.parse(items[input.dataset.index]);
+      inputDate.done = !input.checked;
+
+      items[input.dataset.index] = JSON.stringify(inputDate);
+
+      setItem();
+    }
+  };
+
+  getDate();
+
+  addItems.onsubmit = submit;
+
+  itemsList.onclick = click;
 </script>
 
 
