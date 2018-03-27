@@ -8,33 +8,57 @@
 
   <script>
     // start with strings, numbers and booleans
+    // 从字符串，数字和布尔值开始
 
     // Let's say we have an array
+    // 假设我们有一个数组
     const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
 
     // and we want to make a copy of it.
+    // 我们想要复制它。
 
     // You might think we can just do something like this:
+    // 你可能会认为我们可以做这样的事情：
+    var newPlayers = players.slice();
+    console.log(players, newPlayers)
 
     // however what happens when we update that array?
+    // 然而当我们更新数组时会发生什么？
+    newPlayers.push('lee');
+    console.log(players, newPlayers)
 
     // now here is the problem!
+    // 现在是这个问题！
 
     // oh no - we have edited the original array too!
+    // 哦不 - 我们也编辑了原始数组！
 
     // Why? It's because that is an array reference, not an array copy. They both point to the same array!
+    // 为什么？ 这是因为这是一个数组引用，而不是数组副本。 他们都指向相同的阵列！
 
     // So, how do we fix this? We take a copy instead!
+    // 那么，我们如何解决这个问题呢？ 我们取一份副本！
 
     // one way
+    // 一种方法
 
     // or create a new array and concat the old one in
+    // 或者创建一个新的数组并将其中的旧数组连接起来
+    var newPlayers1 = players.concat([]);
+    newPlayers1.push(1);
+    console.log(players, newPlayers1)
 
     // or use the new ES6 Spread
+    // 或者使用新的ES6 Spread
+    var newPlayers2 = [...players]
+    newPlayers2.push(2);
+    console.log(players, newPlayers2)
 
     // now when we update it, the original one isn't changed
+    // 现在当我们更新它时，原来的一个没有改变
 
     // The same thing goes for objects, let's say we have a person object
+    // 对象也是一样，假设我们有一个人物对象
 
     // with Objects
     const person = {
@@ -43,12 +67,25 @@
     };
 
     // and think we make a copy:
+    // 并认为我们做了一个副本：
+    var newPerson = JSON.parse(JSON.stringify(person));
+    newPerson.age = 100;
+    console.log(person, newPerson)
 
     // how do we take a copy instead?
+    // 我们如何取代副本？
 
     // We will hopefully soon see the object ...spread
+    // 我们希望很快看到对象...传播
+    var newPerson1 = {...person}
+    newPerson1.age = 120;
+    console.log(person, newPerson1)
 
     // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
+    // 需要注意的是 - 这只有1级深度 - 无论是阵列还是物体。 lodash有一个cloneDeep方法，但在使用它之前应该考虑三次。
+    var newPerson3 = Object.assign({}, person);
+    newPerson3.age = 320;
+    console.log(person, newPerson3)
 
   </script>
 
