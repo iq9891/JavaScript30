@@ -35,6 +35,67 @@
   </style>
 
 <script>
+var h1 = document.querySelector('h1');
+/**
+ * 处理小数相乘多位数的问题
+ * @param {Number} arg1 相乘的参数1
+ * @param {Number} arg2 相乘的参数2
+ * @return {Number};
+ */
+var accMul = function(arg1,arg2) {
+  var m=0,s1=arg1.toString(),
+  s2=arg2.toString();
+  try{
+    m+=s1.split(".")[1].length
+  }catch(e){}
+  try{
+    m+=s2.split(".")[1].length
+  }catch(e){}
+  return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+}
+/**
+ * 鼠标到文字中心的距离
+ * @param {MouseEvent} e Event 对象
+ * @return {Object<Number>};
+ */
+var distance = function(e) {
+  var h1Top = h1.offsetTop;
+  var h1Left = h1.offsetLeft;
+  var h1Width = h1.offsetWidth;
+  var h1Height = h1.offsetHeight;
+  var x = e.clientX;
+  var y = e.clientY;
+  var centerX = h1Left + h1Width / 2;
+  var centerY = h1Top + h1Height / 2;
+  // 如果鼠标没有碰到
+  return {
+    x: accMul(x - centerX, 0.7),
+    y: accMul(y - centerY, 0.7),
+  };
+};
+/**
+ * 随机
+ * @param {Number} min 最小范围
+ * @param {Number} max 最大范围
+ * @param {Boolean} floor 是否向下取整
+ * @return {Number};
+ */
+var random = function(min, max, floor) {
+  var newMin = typeof min === undefined ? 500 : min;
+  var newMax = typeof max === undefined ? 10000 : max;
+  var isFloor = typeof floor === undefined ? true : floor;
+  var num = (Math.random() * newMax) + newMin;
+  return  isFloor ? Math.floor(num) : num;
+};
+/**
+ * 鼠标到文字中心的距离
+ * @param {MouseEvent} e Event 对象
+ * @return undefined;
+ */
+document.onmousemove = function(e) {
+  var dtNumber = distance(e);
+  h1.style.textShadow = dtNumber.x + 'px '+ dtNumber.y +'px 0 hsl('+ random(0, 360) +',50%,50%), '+ -dtNumber.x +'px '+ -dtNumber.y +'px 0 hsl('+ random(0, 360) +',50%,50%), '+ -dtNumber.x +'px '+ dtNumber.y +'px 0 hsl('+ random(0, 360) +',50%,50%), '+ dtNumber.x +'px '+ -dtNumber.y +'px 0 hsl('+ random(0, 360) +',50%,50%)';
+};
 </script>
 </body>
 </html>
