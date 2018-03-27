@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>Videos</title>
+  <title>Videos 累加 time 时间</title>
 </head>
 <body>
   <ul class="videos">
@@ -182,6 +182,29 @@
     </li>
   </ul>
 <script>
+// 15m for me
+// 30m
+var lis = document.querySelectorAll('[data-time]');
+// Array.from 将 li 变成数组，从而使用数组的 map 方法
+var nodeLists = Array.from(lis);
+
+var times = nodeLists.map(function(li) {
+  return li.dataset.time;
+});
+// 累加得出所有时间
+var all = times.reduce(function(one, two) {
+  var oneList = one.split(':');
+  var twoList = two.split(':');
+  var hours = Number(Number(oneList[0]) + Number(twoList[0]));
+  var minutes = Number(Number(oneList[1]) + Number(twoList[1]));
+  return hours + ':' + minutes;
+}, '0:00');
+
+var allList = all.split(':');
+// 将所累加出来的时间，进行时分秒规范
+var allTime = Math.floor(allList[0] / 60) + ':' + (allList[0] % 60 + Math.floor(allList[1] / 60)) + ':' + allList[1] % 60;
+
+console.log(allTime)
 </script>
 </body>
 </html>
