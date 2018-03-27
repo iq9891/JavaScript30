@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>Sort Without Articles</title>
+  <title>排除 AN | A | THE 排序</title>
 </head>
 <body>
 
@@ -46,7 +46,23 @@
 <script>
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 
+// 30m
+// 10m for me
 
+// 过滤 An | A | the
+var fetchArticles = function(str) {
+  return str.replace(/A(n?) |The /g, '');
+};
+// 排序
+var newBands = bands.sort(function(one, two) {
+  return fetchArticles(one) > fetchArticles(two) ? 1 : -1;
+});
+// 变成 html
+var htmlBands = newBands.map(function(newBand) {
+  return '<li>' + newBand + '</li>';
+});
+// 结果添加到页面中
+document.getElementById('bands').innerHTML =  htmlBands.join(',').replace(/,/g, '');
 </script>
 
 </body>
