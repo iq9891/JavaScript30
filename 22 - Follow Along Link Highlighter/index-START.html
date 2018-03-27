@@ -26,7 +26,60 @@
     </div>
 
   <script>
-    // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+    // 30m for me
+    // 1h
+    function Highlighter() {
+      this.createNode();
+      this.bindEvent();
+    }
+    /**
+     * 创建高亮节点
+     */
+    Highlighter.prototype.createNode = function() {
+      this.span = document.createElement('span');
+      this.span.className = 'highlight';
+      document.body.appendChild(this.span);
+    };
+    /**
+     * 绑定事件
+     */
+    Highlighter.prototype.bindEvent = function() {
+      var self = this;
+      document.onmouseover = function(e) {
+        if(e.target.nodeName === 'A') {
+          self.mouseover(e);
+        }
+      };
+    };
+    /**
+     * 绑定事件
+     * @param {MouseEvent} e Event 对象
+     */
+    Highlighter.prototype.mouseover = function(e) {
+      var link = e.target;
+      var linkRect = link.getBoundingClientRect();
+      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      this.css({
+        width: link.offsetWidth + 'px',
+        height: link.offsetHeight +'px',
+        top: linkRect.top + scrollTop + 'px',
+        left: linkRect.left + 'px'
+      });
+    };
+    /**
+     * 设定样式
+     * @param {DOMElement} el 元素对象
+     * @param {Object} styles 样式对象
+     * @return undefined;
+     */
+    Highlighter.prototype.css = function(styles) {
+      var self = this;
+      Object.keys(styles).forEach(function(key) {
+        self.span.style[key] = styles[key];
+      });
+    };
+
+    new Highlighter();
   </script>
 </body>
 </html>
