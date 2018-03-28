@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>Video Speed Scrubber</title>
+  <title>Video 改变播放速度</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,6 +15,26 @@
   </div>
 
 <script>
+  // 30m for me
+  // 1h
+  var bar = document.querySelector('.speed-bar');
+  var speed = document.querySelector('.speed');
+  var video = document.querySelector('.flex');
+
+  var speedTop = speed.offsetTop;
+  var speedHeight = speed.offsetHeight;
+
+  var speadRate = 4;
+
+  var mousemove = function(e) {
+    var rate = (e.clientY - speedTop) / speedHeight;
+    newRate = rate.toFixed(1) - 0;
+    bar.style.height = rate * 100 + '%';
+    bar.innerHTML = rate.toFixed(2) * speadRate + 'x';
+    video.playbackRate = newRate * speadRate;
+  };
+
+  speed.onmousemove = mousemove;
 </script>
 </body>
 </html>
