@@ -34,8 +34,26 @@
     <div class="item item25">25</div>
   </div>
 
-<script>
-</script>
+  <script>
+    // 10m for me
+    // 30m
+    var items = document.querySelector('.items');
+    var lastX = 0;
+
+    items.onmousedown = function(e) {
+      items.classList.add('active');
+      lastX = e.clientX;
+
+      items.onmousemove = function(e) {
+        items.scrollLeft += lastX - e.clientX;
+      };
+
+      items.onmouseup = function() {
+        items.classList.remove('active');
+        items.onmousemove = null;
+      };
+    };
+  </script>
 
   </body>
 </html>
