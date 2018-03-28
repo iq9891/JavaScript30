@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>Follow Along Nav</title>
+  <title>跟着导航提示</title>
 </head>
 <body>
   <h2>Cool</h2>
@@ -13,7 +13,7 @@
 
     <ul class="cool">
       <li>
-        <a href="#">About Me</a>
+        <a class="dropbtn" href="#">About Me</a>
         <div class="dropdown dropdown1">
           <div class="bio">
             <img src="https://logo.clearbit.com/wesbos.com">
@@ -22,7 +22,7 @@
         </div>
       </li>
       <li>
-        <a href="#">Courses</a>
+        <a class="dropbtn" href="#">Courses</a>
         <ul class="dropdown courses">
           <li>
             <span class="code">RFB</span>
@@ -63,7 +63,7 @@
         </ul>
       </li>
       <li>
-        <a href="#">Other Links</a>
+        <a class="dropbtn" href="#">Other Links</a>
         <ul class="dropdown dropdown3">
           <li><a class="button" href="http://twitter.com/wesbos">Twitter</a></li>
           <li><a class="button" href="http://facebook.com/wesbos.developer">Facebook</a></li>
@@ -221,6 +221,69 @@
 </style>
 
 <script>
+  // 1h no.1
+  var links = document.querySelectorAll('.dropbtn');
+  var dropdownBackground = document.querySelector('.dropdownBackground');
+  /**
+   * 设定样式
+   * @param {DOMElement} el 元素对象
+   * @param {Object} styles 样式对象
+   * @return undefined;
+   */
+  var css = function(el, styles) {
+    Object.keys(styles).forEach(function(key) {
+      el.style[key] = styles[key];
+    });
+  };
+
+  var addClass = function(el, className) {
+    el.classList.add(className);
+  };
+
+  var removeClass = function(el, className) {
+    el.classList.remove(className);
+  };
+
+  var mouseover = function(e) {
+    var target = e.target;
+    var nextNode = target.nextElementSibling;
+    var parentNode = target.parentNode;
+
+    addClass(parentNode, 'trigger-enter');
+
+    var nextNodeRect = nextNode.getBoundingClientRect();
+
+    css(dropdownBackground, {
+      width: nextNodeRect.width + 'px',
+      height: nextNodeRect.height + 'px',
+      left: nextNodeRect.left + 'px',
+      top: 83 + 'px',
+      opacity: 1
+    });
+
+    addClass(parentNode, 'trigger-enter-active');
+
+  };
+
+  var mouseout = function(e) {
+    var target = e.target;
+    var nextNode = target.nextElementSibling;
+    var parentNode = target.parentNode;
+
+    removeClass(parentNode, 'trigger-enter');
+    removeClass(parentNode, 'trigger-enter-active');
+
+    css(dropdownBackground, {
+      width: 0,
+      height: 0,
+      opacity: 0
+    });
+  };
+
+  links.forEach(function(link) {
+    link.onmouseover = mouseover;
+    link.onmouseout = mouseout;
+  });
 </script>
 
 </body>
