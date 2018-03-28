@@ -84,3 +84,18 @@ nav a {
   transition:all 0.2s;
   text-transform: uppercase;
 }
+/* 粘性导航 start */
+body.fixed-nav {
+  padding-top: 77px;
+}
+
+body.fixed-nav nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+body.fixed-nav .logo {
+  max-width: 330px;
+}
+/* 粘性导航 end */

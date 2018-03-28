@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>Sticky Nav</title>
+  <title>粘性导航</title>
   <link rel="stylesheet" href="style-START.css">
 </head>
 <body>
@@ -54,7 +54,17 @@
   </div>
 
 <script>
+  // 30m
+  var main = document.querySelector('#main');
+  var body = document.body;
+  var mainTop = main.offsetTop;
 
+  var gogogo = function() {
+    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    body.className = scrollTop >= mainTop ? 'fixed-nav' : '';
+  };
+
+  window.onscroll = gogogo;
 </script>
 
 </body>
