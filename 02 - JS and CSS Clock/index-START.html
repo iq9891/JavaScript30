@@ -90,15 +90,15 @@
       // 一圈 360 度 / 一分钟 60 秒 = 6
       var secondStep = 360 / 60;
       var second = myDate.getSeconds() * secondStep;
-      setStyle('min', minute);
+      setStyle('second', second);
 
       // 一圈 360 度 / 一小时 60 分 = 6
       var minuteStep = 360 / 60;
       var minute = myDate.getMinutes() * minuteStep;
-      setStyle('second', second);
+      setStyle('min', minute);
 
       // 一圈 360 度 / 一圈 12 个小时 = 30
-      var hourStep = 360 / 60;
+      var hourStep = 360 / 12;
       // 整点之间的过渡 -> 一圈 360 度 / 整点之间的间距角度是 30 度 = 12
       var transitionStep = 360 / 30;
       // 时针随着分针的不断运动而运动
